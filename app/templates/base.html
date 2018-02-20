@@ -1,0 +1,45 @@
+<html>
+    
+    <!-- Jinja2 (template engine) is going to allow us to add dynamic content at runtime, as follows: -->
+    <!-- - {{ variable_name }} - it will substitute this for a value (provided it is given as an argument to render_template --> 
+    <!-- curly brackets with % - inside here you can put if ... else ... endif -->
+
+    <head>
+        {% if title %}
+        <title>{{ title }} - Microblog</title>
+        {% else %}
+        <title>Welcome to Microblog</title>
+        {% endif %}
+    </head>
+    
+    <body>
+        <div>
+            Microblog:
+            <a href={{url_for('index')}}>Home</a>
+            <a href={{url_for('login')}}>Login</a>
+            <!-- The url_for function will work out the url for the route "def index():"
+            could also use href="/login" etc, but you might change the url link later so this is not good practice -->
+        </div>
+
+        <hr> <!-- this will give me a line on the screen -->
+        
+        <!-- within the context of this template, assign the result of get_flashed_messages()
+        (a function that comes from Flask) to the 'messages' variable.
+        Calling get_flashed_messages() will also delete them -->
+        {% with messages = get_flashed_messages() %}
+        
+        {% if messages %} <!-- check if there are any flashed messages before starting to write them -->
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        
+        <hr>
+        
+        {% block content %}{% endblock %}
+        
+    </body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Sign In</h1>
+    <form action="" method="post">
+    
+    <!--action: "url" gives you the url that should be used to receive the data.
+                "" would be the current url.
+    
+        method: POST = submit the form data in the body of the request  
+                GET = add the form fields to the URL (not good practice)
+                default = GET -->
+                
+        {{ form.hidden_tag() }}
+        <!-- To enable safe data transfer, you need to do 2 things:
+        (1) Use form.hidden_tag() 
+        (2) Make sure that SECRET_KEY is configured in config.py
+        Then the module Flask-wtf will encrypt the data for you
+        -->
+        
+        
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}
+            <!-- The form object is already set up as an html form object, so the fields within
+            it know that they are form elements and you don't need to code them explicitly.
+            Where size=32 has been added, you could add other things such as id="..." or class="..." -->
+            
+            <!-- If this template is being rendered as a result of unsuccessful submit, 
+            then form.username will contain one or more errors which can then be displayed: -->
+            {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+            {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}
